@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit"
-import { RootState } from "./index"
+import {createSlice, PayloadAction, createSelector} from "@reduxjs/toolkit"
+import {RootState} from "./index"
+import {anotherValue} from "./anotherModule"
 
 export type State = {
   value: number
@@ -27,10 +28,12 @@ const counterModule = createSlice({
 
 // selector
 const counterSelector = (state: RootState) => state.counter
-export const displayValue = createSelector([counterSelector],(state: State) => {
-  console.log('state is ', state)
-  return state.value % 3 === 0 ? "hoge" : "fuga"
+export const displayValue = createSelector([counterSelector, anotherValue], (state: State, value) => {
+  if (value % 2 === 1) {
+    return state.value + 1000
+  }
+  return state.value
 })
 
-export const { actions: counterActions } = counterModule
+export const {actions: counterActions} = counterModule
 export default counterModule
